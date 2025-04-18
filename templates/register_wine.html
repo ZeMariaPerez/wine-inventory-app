@@ -1,0 +1,102 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Register
+{% endblock %}
+
+{% block main %}
+
+    <div style="padding-bottom: 50px;">
+
+        <div class="mb-5 border-bottom page-title">
+            <h3><i class="bi bi-pencil-square"></i> Register</h3>
+        </div>
+
+        <div class="instructions text-muted mb-2">
+            Use the following fields to register a new wine into your catalog.
+        </div>
+
+            <form action="/register_wine" method="post">
+                <div class="row g-2 mb-2">
+                    <div class="col-md-3">
+                        <input list="wine-name-options" autocomplete="off" autofocus class="form-control form-control-sm" name="wine_name" placeholder="Brand" type="text">
+                        <datalist id="wine-name-options">
+                            {% for wine in wine_names %}
+                                <option value="{{ wine.wine_name }}">
+                            {% endfor %}
+                        </datalist>
+                    </div>
+
+                    <div class="col-md-3">
+                        <input list="brand-options" autocomplete="off" class="form-control form-control-sm" name="brand" placeholder="Producer" type="text">
+                        <datalist id="brand-options">
+                            {% for brand in brands %}
+                                <option value="{{ brand.brand }}">
+                            {% endfor %}
+                        </datalist>
+                    </div>
+
+                    <div class="col-md-3">
+                        <input list="region-options" autocomplete="off" class="form-control form-control-sm" name="region" placeholder="Region" type="text">
+                        <datalist id="region-options">
+                            {% for region in regions %}
+                                <option value="{{ region.region }}">
+                            {% endfor %}
+                        </datalist>
+                    </div>
+
+                    <div class="col-md-3">
+                        <input list="type-options" autocomplete="off" class="form-control form-control-sm" name="wine_type" placeholder="Type" type="text">
+                        <datalist id="type-options">
+                            {% for type in types %}
+                                <option value="{{ type.wine_type }}">
+                            {% endfor %}
+                        </datalist>
+                    </div>
+                </div>
+
+                <div class="row g-2 mb-2">
+                    <div class="col-md-3">
+                        <input list="subtype-options" autocomplete="off" class="form-control form-control-sm" name="subtype" placeholder="Color (optional)" type="text">
+                        <datalist id="subtype-options">
+                            {% for subtype in subtypes %}
+                                <option value="{{ subtype.subtype }}">
+                            {% endfor %}
+                        </datalist>
+                    </div>
+
+                    <div class="col-md-3">
+                        <input list="year-options" autocomplete="off" class="form-control form-control-sm" name="year" placeholder="Year" type="text">
+                        <datalist id="year-options">
+                            {% for year in years %}
+                                <option value="{{ year.year }}">
+                            {% endfor %}
+                        </datalist>
+                    </div>
+
+                    <div class="col-md-3">
+                        <input autocomplete="off" class="form-control form-control-sm" name="alcohol" placeholder="Alcohol Content (%)" type="number" step="0.01" min="0.1">
+                    </div>
+
+                    <div class="col-md-3">
+                        <input list="bottle-size-options" autocomplete="off" class="form-control form-control-sm" name="bottle_size" placeholder="Bottle Size (L)" type="number" step="0.01" min="0.2">
+                        <datalist id="bottle-size-options">
+                            {% for size in bottle_sizes %}
+                                <option value="{{ size.bottle_size }}">
+                            {% endfor %}
+                        </datalist>
+                    </div>
+                </div>
+
+                <div class="row mb-2">
+                    <div class="col-md-12">
+                        <input autocomplete="off" class="form-control form-control-sm" name="description" placeholder="Description (optional)" type="text">
+                    </div>
+                </div>
+
+                <button class="btn btn-custom btn-sm bi bi-database-add" type="submit"> Register</button>
+            </form>
+
+    </div>
+
+{% endblock %}
