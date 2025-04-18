@@ -1,0 +1,87 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Sales
+{% endblock %}
+
+{% block main %}
+
+    <div style="padding-bottom: 50px;">
+
+        <div class="mb-5 border-bottom page-title">
+            <h3><i class="bi bi-cash-coin"></i> Sales</h3>
+        </div>
+
+        <div class="instructions text-muted mb-2">
+            The following table displays the sales history. Click a sale to select it, then use the delete button to remove it.
+        </div>
+
+        <div class="table-container mb-2">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Brand</th>
+                        <th>Producer</th>
+                        <th>Type</th>
+                        <th>Year</th>
+                        <th>Bottle Size</th>
+                        <th>Quantity Sold</th>
+                        <th>Transaction Profit</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody id="wine_table_body" style="cursor: pointer">
+                    {% for sale in sales %}
+                        <tr data-wine-id="{{ sale.wine_id }}" data-sale-id="{{ sale.sale_id }}" onclick="selectSale(event)">
+                            <td>{{ sale.wine_name }}</td>
+                            <td>{{ sale.brand }}</td>
+                            <td>{{ sale.wine_type }}</td>
+                            <td>{{ sale.year }}</td>
+                            <td>{{ two_decimals(sale.bottle_size) }}</td>
+                            <td>{{ sale.bottle_quantity }}</td>
+                            <td>{{ two_decimals(sale.sale_value) }}€</td>
+                            <td>{{ sale.sale_date }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <form action="/sales" method="post">
+            <input type="hidden" id="selected_wine_id" name="wine_id">
+            <input type="hidden" id="selected_sale_id" name="sale_id">
+            <div class="d-flex align-items-center gap-2">
+                <button class="btn btn-sm btn-danger bi bi-journal-x"> Undo Sale</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        function selectSale(event) {
+            let selectedRow = event.currentTarget;
+            let wineId = selectedRow.dataset.wineId;
+            let saleId = selectedRow.dataset.saleId;
+
+            const isAlreadySelected = selectedRow.classList.contains("selected-row");
+
+            if (isAlreadySelected) {
+                selectedRow.classList.remove("selected-row");
+                document.getElementById("selected_wine_id").value = "";
+                document.getElementById("selected_sale_id").value = "";
+            } else {
+                document.querySelectorAll("#wine_table_body tr").forEach(row => {
+                    row.classList.remove("selected-row");
+                });
+                selectedRow.classList.add("selected-row");
+                document.getElementById("selected_wine_id").value = wineId;
+                document.getElementById("selected_sale_id").value = saleId;
+
+            }
+        }
+
+        window.selectSale = selectSale;
+
+    </script>
+
+{% endblock %}
+
